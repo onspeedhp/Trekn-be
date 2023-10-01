@@ -6,7 +6,7 @@ async function getUriDrop(props) {
       const { dropId } = props;
       const { data, error } = await supabase
         .from('drop')
-        .select('name, description, image, attributes')
+        .select('name, symbol, description, image, attributes')
         .eq('id', dropId);
 
       if (!error) {
