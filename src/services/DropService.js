@@ -11,7 +11,7 @@ async function getUriDrop(props) {
 
       if (!error) {
         resolve({
-          ...data,
+          ...data[0],
         });
       } else {
         resolve({
