@@ -2,7 +2,8 @@ const DropService = require('../services/DropService');
 
 const getUriDrop = async (req, res) => {
   try {
-    const { dropId } = req.body;
+    const { dropId } = req.params;
+
     if (!dropId) {
       return res.status(200).json({
         status: 'ERR',
@@ -10,7 +11,7 @@ const getUriDrop = async (req, res) => {
       });
     }
 
-    const respone = await DropService.getUriDrop(req.body);
+    const respone = await DropService.getUriDrop(req.params);
     return res.status(200).json(respone);
   } catch (e) {
     return res.status(404).json({

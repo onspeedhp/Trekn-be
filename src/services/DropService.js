@@ -18,7 +18,7 @@ async function getUriDrop(props) {
       } else {
         resolve({
           status: 'ERR',
-          massage: 'Cannot get all mission',
+          massage: error,
         });
       }
     } catch (e) {
