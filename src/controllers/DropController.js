@@ -1,8 +1,17 @@
 const DropService = require('../services/DropService');
 
-const getAllDrops = async (req, res) => {
+const getUriDrop = async (req, res) => {
   try {
-    const respone = await DropService.getAllDrops();
+    const { dropId } = req.params;
+
+    if (!dropId) {
+      return res.status(200).json({
+        status: 'ERR',
+        message: 'The input is required',
+      });
+    }
+
+    const respone = await DropService.getUriDrop(req.params);
     return res.status(200).json(respone);
   } catch (e) {
     return res.status(404).json({
@@ -53,7 +62,7 @@ const getNearBy = async (req, res) => {
 };
 
 module.exports = {
-  getAllDrops,
+  getUriDrop,
   getReadyToCollect,
   getNearBy,
 };

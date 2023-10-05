@@ -1,14 +1,18 @@
 const { supabase } = require('../configs/supabaseClient');
 const { calculateDistance } = require('../functions/calculateDistance');
 
-async function getAllDrops() {
+async function getUriDrop(props) {
   return new Promise(async (resolve, reject) => {
     try {
-      const { data, error } = await supabase.from('drop').select('*');
+      const { dropId } = props;
+      const { data, error } = await supabase
+        .from('drop')
+        .select('name, symbol, description, image, attributes')
+        .eq('id', dropId);
 
       if (!error) {
         resolve({
-          data,
+          ...data[0],
         });
       } else {
         resolve({
@@ -102,7 +106,7 @@ async function getDropNearBy(props) {
 }
 
 module.exports = {
-  getAllDrops,
+  getUriDrop,
   getDropReadyToCollect,
   getDropNearBy,
 };
