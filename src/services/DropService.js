@@ -31,7 +31,7 @@ async function getDropReadyToCollect(props) {
     try {
       const { lat, lng } = props;
 
-      const { data, error } = await supabase.from('drop').select('*');
+      const { data, error } = await supabase.from('drop').select('*, user(*)');
 
       let readyToCollect = [];
       data.map((drop) => {
@@ -70,7 +70,7 @@ async function getDropNearBy(props) {
     try {
       const { lat, lng } = props;
 
-      const { data, error } = await supabase.from('drop').select('*');
+      const { data, error } = await supabase.from('drop').select('*, user(*)');
 
       let nearBy = [];
       data.map((drop) => {
