@@ -1,19 +1,31 @@
 const { supabase } = require('../configs/supabaseClient');
 const { calculateDistance } = require('../functions/calculateDistance');
 
+function between(min, max) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
 async function getUriDrop(props) {
   return new Promise(async (resolve, reject) => {
     try {
       const { dropId } = props;
       const { data, error } = await supabase
         .from('drop')
-        .select('name, symbol, description, image, attributes')
+        .select('name, symbol, description, image, attributes, imageArray')
         .eq('id', dropId);
 
       if (!error) {
-        resolve({
-          ...data[0],
-        });
+        if (data[0].imageArray && data[0].imageArray > 1) {
+          const index = between(0, data[0].imageArray.length);
+          resolve({
+            image: data[0].imageArray[index],
+            ...data[0],
+          });
+        } else {
+          resolve({
+            ...data[0],
+          });
+        }
       } else {
         resolve({
           status: 'ERR',
