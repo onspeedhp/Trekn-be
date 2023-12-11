@@ -8,31 +8,55 @@ function between(min, max) {
 async function getUriDrop(props) {
   return new Promise(async (resolve, reject) => {
     try {
+      console.log('Running');
       const { dropId } = props;
       const { data, error } = await supabase
-        .from('drop')
-        .select('name, symbol, description, image, attributes, imageArray')
+        .from('minted')
+        .select('*, drop(*)')
         .eq('id', dropId);
 
       if (!error) {
-        if (data[0].imageArray && data[0].imageArray > 1) {
-          const index = between(0, data[0].imageArray.length);
-          resolve({
-            image: data[0].imageArray[index],
-            ...data[0],
-          });
-        } else {
-          resolve({
-            ...data[0],
-          });
-        }
+        const uri = {
+          name: data[0].drop.name,
+          symbol: data[0].symbol,
+          description: data[0].description,
+          image: data[0].image,
+          attributes: [
+            {
+              'Drop name': data[0].drop.name,
+              'Drop location': data[0].drop.location,
+              'Drop description': data[0].drop.description,
+            },
+          ],
+        };
+
+        resolve({ ...uri });
       } else {
         resolve({
           status: 'ERR',
           massage: error,
         });
       }
+      // if (!error) {
+      //   if (data[0].imageArray && data[0].imageArray > 1) {
+      //     const index = between(0, data[0].imageArray.length);
+      //     resolve({
+      //       image: data[0].imageArray[index],
+      //       ...data[0],
+      //     });
+      //   } else {
+      //     resolve({
+      //       ...data[0],
+      //     });
+      //   }
+      // } else {
+      //   resolve({
+      //     status: 'ERR',
+      //     massage: error,
+      //   });
+      // }
     } catch (e) {
+      console.log(e);
       reject(e);
     }
   });
